@@ -14,6 +14,7 @@ export type { Web3ModalOptions } from '../src/client.js'
 // -- Setup -------------------------------------------------------------------
 let modal: Web3Modal | undefined = undefined
 
+// 可以看成是一个单例模式，只有一个modal
 export function createWeb3Modal(options: Web3ModalOptions) {
   if (!modal) {
     modal = new Web3Modal({

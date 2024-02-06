@@ -44,6 +44,7 @@ export class W3mNetworkSwitchView extends LitElement {
     }
 
     this.onShowRetry()
+    // 网络切换
     const label = this.error ? 'Switch declined' : 'Approve in wallet'
     const subLabel = this.error
       ? 'Switch can be declined if chain is not supported by a wallet or previous request is still active'

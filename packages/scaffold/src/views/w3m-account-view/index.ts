@@ -106,6 +106,7 @@ export class W3mAccountView extends LitElement {
                     truncate: 'middle'
                   })}
             </wui-text>
+            <!-- 拷贝地址 -->
             <wui-icon-link
               size="md"
               icon="copy"
@@ -125,7 +126,7 @@ export class W3mAccountView extends LitElement {
 
       <wui-flex flexDirection="column" gap="xs" .padding=${['0', 's', 's', 's'] as const}>
         ${this.emailCardTemplate()} ${this.emailBtnTemplate()}
-
+        <!-- chain -->
         <wui-list-item
           .variant=${networkImage ? 'image' : 'icon'}
           iconVariant="overlay"
@@ -139,6 +140,7 @@ export class W3mAccountView extends LitElement {
             ${this.network?.name ?? 'Unknown'}
           </wui-text>
         </wui-list-item>
+        <!-- Activity -->
         <wui-list-item
           iconVariant="blue"
           icon="swapHorizontalBold"
@@ -148,6 +150,7 @@ export class W3mAccountView extends LitElement {
         >
           <wui-text variant="paragraph-500" color="fg-100">Activity</wui-text>
         </wui-list-item>
+        <!-- Disconnect -->
         <wui-list-item
           variant="icon"
           iconVariant="overlay"
@@ -165,9 +168,11 @@ export class W3mAccountView extends LitElement {
 
   // -- Private ------------------------------------------- //
   private emailCardTemplate() {
+    // 提示升级
     const type = StorageUtil.getConnectedConnector()
     const emailConnector = ConnectorController.getEmailConnector()
     const { origin } = location
+    // 如果没有邮箱连接器，或者类型不是EMAIL，或者是安全站点，返回null
     if (!emailConnector || type !== 'EMAIL' || origin.includes(ConstantsUtil.SECURE_SITE)) {
       return null
     }

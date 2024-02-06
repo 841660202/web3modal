@@ -20,7 +20,40 @@ type AwaitUpdateEmailResolver = Resolver<W3mFrameTypes.Responses['FrameAwaitUpda
 type SyncThemeResolver = Resolver<undefined>
 type SyncDappDataResolver = Resolver<undefined>
 
-// -- Provider --------------------------------------------------------
+/*
+ * -- Provider --------------------------------------------------------
+ * W3mFrameProvider 的 JavaScript 类，它封装了与 W3mFrame 类交互的逻辑，并提供了一系列方法来处理与区块链相关的操作。
+ * 这个类充当了一个中间层，允许开发者通过一系列的方法调用来与 iframe 内的内容进行交云。
+ * 以下是对类的主要部分的详细解释：
+ *
+ * 1. 构造函数 W3mFrameProvider(projectId: string)：创建一个新的 W3mFrameProvider 实例。
+ * 2. connectEmail(payload: W3mFrameTypes.Requests['AppConnectEmailRequest'])：发起一个邮箱连接请求。
+ * 3. connectDevice()：发起一个设备连接请求。
+ * 4. connectOtp(payload: W3mFrameTypes.Requests['AppConnectOtpRequest'])：发起一个OTP连接请求。
+ * 5. isConnected()：检查当前是否已连接。
+ * 6. getChainId()：获取当前的链ID。
+ * 7. updateEmail(payload: W3mFrameTypes.Requests['AppUpdateEmailRequest'])：发起更新邮箱的请求。
+ * 8. awaitUpdateEmail()：等待邮箱更新的请求。
+ * 9. syncTheme(payload: W3mFrameTypes.Requests['AppSyncThemeRequest'])：同步应用的主题。
+ * 10. syncDappData(payload: W3mFrameTypes.Requests['AppSyncDappDataRequest'])：同步DApp数据。
+ * 11. connect(payload?: W3mFrameTypes.Requests['AppGetUserRequest'])：发起一个连接请求。
+ * 12. switchNetwork(chainId: number)：发起一个网络切换请求。
+ * 13. disconnect()：发起一个断开连接请求。
+ * 14. request(req: W3mFrameTypes.RPCRequest)：发起一个RPC请求。
+ * 15. onRpcRequest(callback: (request: unknown) => void)：监听来自 iframe 的 RPC 请求。
+ * 16. onRpcResponse(callback: (request: unknown) => void)：监听来自 iframe 的 RPC 响应。
+ * 17. onIsConnected(callback: () => void)：监听来自 iframe 的连接成功事件。
+ *  18. getLoginEmailUsed()：表示是否使用了邮箱登录。
+ * 19. getEmail()：返回存储的邮箱地址。
+ *  20. getLoginEmailUsed()：表示是否使用了邮箱登录。
+ * 21. getEmail()：返回存储的邮箱地址。
+ * 22. connectEmail(payload: W3mFrameTypes.Requests['AppConnectEmailRequest'])：发起一个邮箱连接请求。
+ * 23. connectDevice()：发起一个设备连接请求。
+ * 24. connectOtp(payload: W3mFrameTypes.Requests['AppConnectOtpRequest'])：发起一个OTP连接请求。
+ * 25. isConnected()：检查当前是否已连接。
+ * 26. getChainId()：获取当前的链ID。
+ */
+
 export class W3mFrameProvider {
   private w3mFrame: W3mFrame
 
@@ -52,6 +85,7 @@ export class W3mFrameProvider {
 
   public constructor(projectId: string) {
     this.w3mFrame = new W3mFrame(projectId, true)
+    // 监听来自 iframe 的事件
     this.w3mFrame.events.onFrameEvent(event => {
       // eslint-disable-next-line no-console
       console.log('💻 received', event)
@@ -117,15 +151,18 @@ export class W3mFrameProvider {
     })
   }
 
-  // -- Extended Methods ------------------------------------------------
+  /*
+   * -- Extended Methods ------------------------------------------------
+   * 表示是否使用了邮箱登录
+   */
   public getLoginEmailUsed() {
     return Boolean(W3mFrameStorage.get(W3mFrameConstants.EMAIL_LOGIN_USED_KEY))
   }
-
+  // 返回存储的邮箱地址
   public getEmail() {
     return W3mFrameStorage.get(W3mFrameConstants.EMAIL)
   }
-
+  // 发起一个邮箱连接请求
   public async connectEmail(payload: W3mFrameTypes.Requests['AppConnectEmailRequest']) {
     await this.w3mFrame.frameLoadPromise
     W3mFrameHelpers.checkIfAllowedToTriggerEmail()
@@ -135,7 +172,7 @@ export class W3mFrameProvider {
       this.connectEmailResolver = { resolve, reject }
     })
   }
-
+  // 发起一个设备连接请求
   public async connectDevice() {
     await this.w3mFrame.frameLoadPromise
     this.w3mFrame.events.postAppEvent({ type: W3mFrameConstants.APP_CONNECT_DEVICE })
@@ -144,7 +181,7 @@ export class W3mFrameProvider {
       this.connectDeviceResolver = { resolve, reject }
     })
   }
-
+  // 发起一个OTP连接请求
   public async connectOtp(payload: W3mFrameTypes.Requests['AppConnectOtpRequest']) {
     await this.w3mFrame.frameLoadPromise
     this.w3mFrame.events.postAppEvent({ type: W3mFrameConstants.APP_CONNECT_OTP, payload })
@@ -153,7 +190,7 @@ export class W3mFrameProvider {
       this.connectOtpResolver = { resolve, reject }
     })
   }
-
+  // 检查当前是否已连接
   public async isConnected() {
     await this.w3mFrame.frameLoadPromise
     this.w3mFrame.events.postAppEvent({
@@ -165,7 +202,7 @@ export class W3mFrameProvider {
       this.isConnectedResolver = { resolve, reject }
     })
   }
-
+  // 获取当前的链ID
   public async getChainId() {
     await this.w3mFrame.frameLoadPromise
     this.w3mFrame.events.postAppEvent({ type: W3mFrameConstants.APP_GET_CHAIN_ID })
@@ -174,7 +211,7 @@ export class W3mFrameProvider {
       this.getChainIdResolver = { resolve, reject }
     })
   }
-
+  // 发起更新邮箱的请求
   public async updateEmail(payload: W3mFrameTypes.Requests['AppUpdateEmailRequest']) {
     await this.w3mFrame.frameLoadPromise
     W3mFrameHelpers.checkIfAllowedToTriggerEmail()
@@ -184,7 +221,7 @@ export class W3mFrameProvider {
       this.updateEmailResolver = { resolve, reject }
     })
   }
-
+  // 等待邮箱更新的请求
   public async awaitUpdateEmail() {
     await this.w3mFrame.frameLoadPromise
     this.w3mFrame.events.postAppEvent({ type: W3mFrameConstants.APP_AWAIT_UPDATE_EMAIL })
@@ -195,7 +232,7 @@ export class W3mFrameProvider {
       }
     )
   }
-
+  // 同步应用的主题
   public async syncTheme(payload: W3mFrameTypes.Requests['AppSyncThemeRequest']) {
     await this.w3mFrame.frameLoadPromise
     this.w3mFrame.events.postAppEvent({ type: W3mFrameConstants.APP_SYNC_THEME, payload })
@@ -204,7 +241,7 @@ export class W3mFrameProvider {
       this.syncThemeResolver = { resolve, reject }
     })
   }
-
+  // 同步DApp数据。
   public async syncDappData(payload: W3mFrameTypes.Requests['AppSyncDappDataRequest']) {
     await this.w3mFrame.frameLoadPromise
     this.w3mFrame.events.postAppEvent({ type: W3mFrameConstants.APP_SYNC_DAPP_DATA, payload })

@@ -358,6 +358,30 @@ export class Web3Modal extends Web3ModalScaffold {
         })
       }
     })
+    console.log('w3mConnectors', w3mConnectors)
+    /*
+     * [
+     *   ({
+     *     id: 'walletConnect',
+     *     imageId: 'ef1a1fcf-7fe8-4d69-bd6d-fda1345b4400',
+     *     name: 'WalletConnect',
+     *     type: 'WALLET_CONNECT'
+     *   },
+     *   {
+     *     id: 'injected',
+     *     imageId: '07ba87ed-43aa-4adf-4540-9e6a2b9cae00',
+     *     name: 'Browser Wallet',
+     *     type: 'INJECTED'
+     *   },
+     *   {
+     *     id: 'coinbaseWallet',
+     *     explorerId: 'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa',
+     *     imageId: '0c2840c3-5b04-4c44-9661-fbd4b49e1800',
+     *     name: 'Coinbase',
+     *     type: 'EXTERNAL'
+     *   })
+     * ]
+     */
     this.setConnectors(w3mConnectors)
   }
 

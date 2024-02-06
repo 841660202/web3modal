@@ -59,8 +59,11 @@ export class W3mModal extends LitElement {
       ? html`
           <wui-flex @click=${this.onOverlayClick.bind(this)}>
             <wui-card role="alertdialog" aria-modal="true" tabindex="0">
+              <!-- 头部 -->
               <w3m-header></w3m-header>
+              <!-- 主体 -->
               <w3m-router></w3m-router>
+              <!-- 提示 -->
               <w3m-snackbar></w3m-snackbar>
             </wui-card>
           </wui-flex>
@@ -72,6 +75,7 @@ export class W3mModal extends LitElement {
   private async onOverlayClick(event: PointerEvent) {
     if (event.target === event.currentTarget) {
       await this.handleClose()
+      // 关闭模态框
     }
   }
 

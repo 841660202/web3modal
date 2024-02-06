@@ -21,6 +21,10 @@ export function createWeb3Modal(options: Web3ModalOptions) {
       _sdkVersion: `react-ethers-${ConstantsUtil.VERSION}`
     })
   }
+  /*
+   * https://github.com/841660202/web3modal/blob/a3202ffa6d498296c4540fff17bee2712e85b9ac/packages/scaffold-react/index.ts
+   * 生命全局变量，给其他地方的钩子使用
+   */
   getWeb3Modal(modal)
 
   return modal

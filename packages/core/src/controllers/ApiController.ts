@@ -57,24 +57,28 @@ export const ApiController = {
   },
 
   async _fetchWalletImage(imageId: string) {
+    // 获取钱包图片
     const imageUrl = `${api.baseUrl}/getWalletImage/${imageId}`
     const blob = await api.getBlob({ path: imageUrl, headers: ApiController._getApiHeaders() })
     AssetController.setWalletImage(imageId, URL.createObjectURL(blob))
   },
 
   async _fetchNetworkImage(imageId: string) {
+    // 获取网络图片
     const imageUrl = `${api.baseUrl}/public/getAssetImage/${imageId}`
     const blob = await api.getBlob({ path: imageUrl, headers: ApiController._getApiHeaders() })
     AssetController.setNetworkImage(imageId, URL.createObjectURL(blob))
   },
 
   async _fetchConnectorImage(imageId: string) {
+    // 获取连接器图片
     const imageUrl = `${api.baseUrl}/public/getAssetImage/${imageId}`
     const blob = await api.getBlob({ path: imageUrl, headers: ApiController._getApiHeaders() })
     AssetController.setConnectorImage(imageId, URL.createObjectURL(blob))
   },
 
   async fetchNetworkImages() {
+    // 获取网络图片
     const { requestedCaipNetworks } = NetworkController.state
     const ids = requestedCaipNetworks?.map(({ imageId }) => imageId).filter(Boolean)
     if (ids) {
@@ -90,6 +94,7 @@ export const ApiController = {
 
   async fetchFeaturedWallets() {
     const { featuredWalletIds } = OptionsController.state
+    console.log('featuredWalletIds', featuredWalletIds)
     if (featuredWalletIds?.length) {
       const { data } = await api.get<ApiGetWalletsResponse>({
         path: '/getWallets',
@@ -130,6 +135,7 @@ export const ApiController = {
         ApiController._fetchWalletImage(id)
       )
     )
+    console.log('data', data)
     state.recommended = data
     state.count = count ?? 0
   },

@@ -43,10 +43,31 @@ export class W3mConnectView extends LitElement {
     return html`
       <wui-flex flexDirection="column" padding="s" gap="xs">
         <w3m-email-login-widget></w3m-email-login-widget>
-
-        ${this.walletConnectConnectorTemplate()} ${this.recentTemplate()}
-        ${this.announcedTemplate()} ${this.injectedTemplate()} ${this.featuredTemplate()}
-        ${this.customTemplate()} ${this.recommendedTemplate()} ${this.connectorsTemplate()}
+        <!--  -->
+        ${this.walletConnectConnectorTemplate()}
+        <!--  -->
+        <p>recentTemplate</p>
+        ${this.recentTemplate()}
+        <!--  -->
+        <p>announcedTemplate</p>
+        ${this.announcedTemplate()}
+        <!--  -->
+        <p>injectedTemplate</p>
+        ${this.injectedTemplate()}
+        <!--  -->
+        <p>featuredTemplate</p>
+        ${this.featuredTemplate()}
+        <!--  -->
+        <p>customTemplate</p>
+        ${this.customTemplate()}
+        <!--  -->
+        <p>recommendedTemplate</p>
+        ${this.recommendedTemplate()}
+        <!--  -->
+        <p>connectorsTemplate</p>
+        ${this.connectorsTemplate()}
+        <!-- All Wallets -->
+        <p>allWalletsTemplate</p>
         ${this.allWalletsTemplate()}
       </wui-flex>
       <w3m-legal-footer></w3m-legal-footer>
@@ -159,6 +180,7 @@ export class W3mConnectView extends LitElement {
     const announced = this.connectors.find(c => c.type === 'ANNOUNCED')
 
     return this.connectors.map(connector => {
+      console.log('connector', connector)
       if (connector.type !== 'INJECTED') {
         return null
       }
@@ -166,10 +188,16 @@ export class W3mConnectView extends LitElement {
       if (!ConnectionController.checkInstalled()) {
         return null
       }
+      const img = ifDefined(AssetUtil.getConnectorImage(connector))
+      console.log('img', img)
+      /*
+       * Blob:http://localhost:3001/db818fec-d073-43ee-965c-5d9d38601673
+       * 这个数据是由 URL.createObjectURL() 创建的 URL 对象
+       */
 
       return html`
         <wui-list-wallet
-          imageSrc=${ifDefined(AssetUtil.getConnectorImage(connector))}
+          imageSrc=${img}
           .installed=${Boolean(announced)}
           name=${connector.name ?? 'Unknown'}
           @click=${() => this.onConnector(connector)}
@@ -242,7 +270,9 @@ export class W3mConnectView extends LitElement {
     }
 
     const overrideLength = eip6963.length + recent.length
+    console.log('overrideLength', overrideLength)
     const maxRecommended = Math.max(0, 2 - overrideLength)
+    console.log('recommended', recommended)
     const wallets = this.filterOutDuplicateWallets(recommended).slice(0, maxRecommended)
 
     return wallets.map(
@@ -269,7 +299,7 @@ export class W3mConnectView extends LitElement {
       RouterController.push('ConnectingExternal', { connector })
     }
   }
-
+  // 过滤掉重复的钱包
   private filterOutDuplicateWallets(wallets: WcWallet[]) {
     const { connectors } = ConnectorController.state
     const recent = StorageUtil.getRecentWallets()

@@ -96,6 +96,7 @@ export const SIWEController = {
 
   async signIn() {
     const client = this._getClient()
+    // ？ setSIWEClient
     const session = await client.signIn()
 
     return session

@@ -92,6 +92,7 @@ export function useWeb3ModalState() {
   const [state, setState] = useState(modal.getState())
 
   useEffect(() => {
+    // 为什么可以设置订阅
     const unsubscribe = modal?.subscribeState(newState => {
       setState({ ...newState })
     })

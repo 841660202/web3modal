@@ -92,7 +92,17 @@ export class Web3Modal extends Web3ModalScaffold {
   private metadata?: Metadata
 
   private options: Web3ModalClientOptions | undefined = undefined
-
+  /*
+   * 这个构造函数接受一个名为 options 的参数，该参数是一个对象，包含了一些配置信息，用于初始化 Web3Modal 实例。以下是对 options 对象的主要部分的详细解释：
+   * ethersConfig：一个对象，包含了一些与以太坊钱包连接器相关的配置信息。
+   * siweConfig：一个对象，包含了一些与 SIWE 相关的配置信息。
+   * chains：一个数组，包含了一些与链相关的配置信息。
+   * defaultChain：一个对象，包含了一些与默认链相关的配置信息。
+   * tokens：一个对象，包含了一些与代币相关的配置信息。
+   * chainImages：一个对象，包含了一些与链图片相关的配置信息。
+   * _sdkVersion：一个字符串，表示 SDK 的版本号。
+   */
+  // Super() 方法调用了父类的构造函数，并传入了一个对象作为参数。这个对象包含了一些配置信息，用于初始化 Web3ModalScaffold 实例。
   public constructor(options: Web3ModalClientOptions) {
     const {
       ethersConfig,

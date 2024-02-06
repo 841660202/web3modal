@@ -12,6 +12,7 @@ export type { Web3ModalOptions } from '../src/client.js'
 let modal: Web3Modal | undefined = undefined
 
 export function createWeb3Modal(options: Web3ModalOptions) {
+  console.log('createWeb3Modal:modal')
   if (!modal) {
     modal = new Web3Modal({
       ...options,

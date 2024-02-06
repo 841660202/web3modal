@@ -11,6 +11,7 @@ import { arbitrum, mainnet } from 'wagmi/chains'
 
 // @ts-expect-error 1. Get projectId
 const projectId = import.meta.env.VITE_PROJECT_ID
+console.log('projectId', projectId)
 if (!projectId) {
   throw new Error('VITE_PROJECT_ID is not set')
 }
@@ -25,6 +26,7 @@ const wagmiConfig = defaultWagmiConfig({
   }
 })
 
+console.log('wagmiConfig12', wagmiConfig)
 // 3. Create modal
 createWeb3Modal({
   wagmiConfig,
@@ -43,7 +45,6 @@ export default function App() {
   const state = useWeb3ModalState()
   const { themeMode, themeVariables, setThemeMode } = useWeb3ModalTheme()
   const events = useWeb3ModalEvents()
-
   return (
     <WagmiConfig config={wagmiConfig}>
       <w3m-button />

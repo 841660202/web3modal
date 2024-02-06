@@ -30,7 +30,7 @@ export const AssetUtil = {
     if (connector?.imageUrl) {
       return connector.imageUrl
     }
-
+    // 发起网络请求获取图片
     if (connector?.imageId) {
       return AssetController.state.connectorImages[connector.imageId]
     }
